@@ -39,7 +39,15 @@ namespace Capstone.Classes
 
         public void Purchase(string slot)
         {
-             // remove from top of list 
+               // check if item is in stock - if not, return "out of stock"
+
+              // check if user has enough money - if not return "insufficient funds"
+
+             // remove item from top of list
+             
+            // subtract amount spent from balance
+
+           // write message to console IE "You have purchased {item name}"
         }
 
         public Change ReturnChange()
