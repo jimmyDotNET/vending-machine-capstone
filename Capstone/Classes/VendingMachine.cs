@@ -10,9 +10,17 @@ namespace Capstone.Classes
     {
         public decimal Balance { get; private set; }
 
-        private Dictionary<string, Stack<VendingMachineItem>> Inventory { get; }
+        private Dictionary<string, List<VendingMachineItem>> Inventory { get; }
 
         public string[] Slots { get; }
+
+        public VendingMachine()
+        {
+            VendingMachineFileReader vmfr = new VendingMachineFileReader("vend.csv");
+
+            Inventory = vmfr.GetInventory();
+
+        }
 
         public void FeedMoney(int dollars)
         {
@@ -21,7 +29,7 @@ namespace Capstone.Classes
 
         public VendingMachineItem GetItemAtSlot(string slot)
         {
-            return Inventory[slot].Peek();
+            return Inventory[slot][0];
         }
 
         public int GetQuantityRemaining(string slot)
@@ -29,14 +37,14 @@ namespace Capstone.Classes
             return Inventory[slot].Count();
         }
 
-        public VendingMachineItem Purchase(string slot)
+        public void Purchase(string slot)
         {
-            return Inventory[slot].Pop();
+             // remove from top of list 
         }
 
         public Change ReturnChange()
         {
-            
+            return new Change(Balance);
         }
     }
 }

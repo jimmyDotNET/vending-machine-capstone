@@ -29,7 +29,6 @@ namespace Capstone.Classes
                     Console.WriteLine(" ");
                     Console.WriteLine("Displaying Vending Machine Items");
                     Console.WriteLine(" ");
-                    VendingMachine.;
                 }
                 else if (input == "2")
                 {
