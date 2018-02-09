@@ -11,10 +11,9 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-
+            VendingMachine vendingMachine = new VendingMachine();
             MainMenu mainmenu = new MainMenu();
-            mainmenu.Display();
-
+            mainmenu.Display(vendingMachine);
         }
     }
 }

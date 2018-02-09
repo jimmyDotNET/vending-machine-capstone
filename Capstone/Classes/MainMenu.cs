@@ -8,21 +8,20 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
-        public void Display()
+        public void Display(VendingMachine vendingMachine)
         {
             try
             {
                 PrintHeader();
 
-                VendingMachine vendingMachine = new VendingMachine();
-
                 bool keepRun = true;
                 while (keepRun)
                 {
-                    Console.WriteLine();
+                    Console.WriteLine(" ");
                     Console.WriteLine("Main Menu");
-                    Console.WriteLine("1] >> Display Vending Machine Items");
-                    Console.WriteLine("2] >> Purchase");
+                    Console.WriteLine(" ");
+                    Console.WriteLine("1] >> Display Items");
+                    Console.WriteLine("2] >> Purchase Menu");
                     Console.WriteLine("Q] >> Quit");
 
                     Console.Write("What option do you want to select? ");
@@ -30,13 +29,6 @@ namespace Capstone.Classes
 
                     if (input == "1")
                     {
-                        vendingMachine.Purchase("A1");
-                        vendingMachine.Purchase("A1");
-                        vendingMachine.Purchase("A1");
-                        vendingMachine.Purchase("A1");
-                        vendingMachine.Purchase("A1");
-
-
                         Console.WriteLine(" ");
                         Console.WriteLine("Displaying Vending Machine Items");
                         Console.WriteLine(" ");
@@ -52,16 +44,18 @@ namespace Capstone.Classes
                             }
                             else
                             {
-                                Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} - {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(20)} ---- {vendingMachine.GetQuantityRemaining(kvp)}");
+                                Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} - {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
                             }
                             enums++;
                         }
-
+                        Console.WriteLine(" ");
+                        Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
+                        Console.WriteLine(" ");
                     }
                     else if (input == "2")
                     {
                         PurchaseMenu purchaseMenu = new PurchaseMenu();
-                        purchaseMenu.Display();
+                        purchaseMenu.Display(vendingMachine);
                     }
                     else if (input.ToLower() == "q")
                     {
@@ -85,7 +79,7 @@ namespace Capstone.Classes
         private void PrintHeader()
         {
 
-            Console.WriteLine("WELCOME!!!!");
+            Console.WriteLine("Welcome to Vend-O-Matic!");
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Capstone.Classes
                             }
                             else if (slotID.StartsWith("D"))
                             {
-                                inventoryItems.Add(new DrinkItem(itemName, price));
+                                inventoryItems.Add(new GumItem(itemName, price));
                             }
                         }
                         inventory.Add(slotID, inventoryItems);

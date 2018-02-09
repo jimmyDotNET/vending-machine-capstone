@@ -8,7 +8,7 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
-        public decimal Balance { get; private set; }
+        public decimal Balance { get; private set; } = 2.00m;
 
         private Dictionary<string, List<VendingMachineItem>> Inventory { get; }
 
@@ -43,7 +43,7 @@ namespace Capstone.Classes
             {
                 return null;
             }
-            
+
         }
 
         public int GetQuantityRemaining(string slot)
@@ -51,31 +51,32 @@ namespace Capstone.Classes
             return Inventory[slot].Count();
         }
 
-        public void Purchase(string slot)
-        { 
+        public void Purchase(string slot, VendingMachine vendingMachine)
+        {
 
             // check if item is in stock - if not, return "out of stock"
-            if (GetQuantityRemaining(slot) > 0)
+            if (GetQuantityRemaining(slot) == 0)
             {
+                Console.WriteLine(" ");
+                Console.Write("SOLD OUT!");
+                Console.WriteLine(" ");
+            }
+            else if (Balance < vendingMachine.GetItemAtSlot(slot).Price)
+            {
+                // check if user has enough money - if not return "insufficient funds"
+                Console.WriteLine(" ");
+                Console.Write("INSUFFICIENT FUNDS!");
+                Console.WriteLine(" ");
+
+            }
+            else if (GetQuantityRemaining(slot) > 0 && vendingMachine.GetItemAtSlot(slot).Price <= Balance)
+            { 
                 // remove item from top of list
                 Inventory[slot].RemoveAt(0);
-                
-                
                 // subtract amount spent from balance            
-
+                Balance -= vendingMachine.GetItemAtSlot(slot).Price;
                 // write message to console IE "You have purchased {item name}"
             }
-            else
-            {
-                Console.Write("Were friggin walkin here.");
-            }
-            
-
-                // check if user has enough money - if not return "insufficient funds"
-
-
-
-
         }
 
         public Change ReturnChange()
