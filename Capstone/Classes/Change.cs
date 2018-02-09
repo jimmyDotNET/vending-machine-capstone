@@ -16,19 +16,20 @@ namespace Capstone.Classes
 
         public decimal Total { get; }
 
-        public Change (decimal total)
+        public Change(decimal total)
         {
-            while (total > .25m)
+
+            while (total >= 0.25m)
             {
-                total -= .25m;
+                total -= 0.25m;
                 Quarters++;
             }
-            while (total > .10m)
+            while (total >= 0.10m)
             {
-                total -= .10m;
+                total -= 0.10m;
                 Dimes++;
             }
-            while (total > .05m)
+            while (total >= 0.05m)
             {
                 total -= .5m;
                 Nickels++;

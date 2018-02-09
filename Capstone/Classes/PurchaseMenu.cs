@@ -9,28 +9,29 @@ namespace Capstone.Classes
 {
     public class PurchaseMenu : MainMenu
     {
-        public new void Display(VendingMachine vendingMachine)
+        public new void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer)
         {
             try
-            { 
-                Console.WriteLine("");
-
-                int i = 0;
-                foreach (var kvp in vendingMachine.Slots)
-                {
-                    Console.WriteLine($"{vendingMachine.Slots.GetValue(i)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
-                    i++;
-                }
-                Console.WriteLine(" ");
-                Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
-                Console.WriteLine(" ");
+            {
                 while (true)
                 {
+                    Console.WriteLine("");
+
+                    int i = 0;
+                    foreach (var kvp in vendingMachine.Slots)
+                    {
+                        Console.WriteLine($"{vendingMachine.Slots.GetValue(i)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
+                        i++;
+                    }
+                    Console.WriteLine(" ");
+                    Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
+                    Console.WriteLine(" ");
+
                     Console.WriteLine(" ");
                     Console.WriteLine("Purchase Menu");
                     Console.WriteLine(" ");
                     Console.WriteLine("1] >> Insert Money");
-                    Console.WriteLine("2] >> Purchase Item");
+                    Console.WriteLine("2] >> Purchase Items");
                     Console.WriteLine("Q] >> Return To Main Menu");
 
                     Console.Write("What option do you want to select? ");
@@ -64,23 +65,30 @@ namespace Capstone.Classes
                                 }
                                 else
                                 {
-                                Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
-                                enums++;
+                                    Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
+                                    enums++;
                                 }
                             }
-                            Console.WriteLine(" ");
+                            Console.WriteLine();
                             Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
-                            Console.WriteLine(" ");
+                            Console.WriteLine();
 
                             Console.Write("Which item would you like to purchase? ");
                             string viewSlot = Console.ReadLine();
+                            Console.WriteLine();
+
+                            Console.WriteLine($"Purchasing {vendingMachine.GetItemAtSlot(viewSlot).ItemName}");
+
+                            customer.Add(vendingMachine.GetItemAtSlot(viewSlot));
+
                             vendingMachine.Purchase(viewSlot, vendingMachine);
 
-                            Console.WriteLine(" ");
+
+                            Console.WriteLine();
                             Console.Write("Are you done shopping?(y/n): ");
                             string userAnswer = Console.ReadLine();
 
-                            if(userAnswer.ToLower() == "y")
+                            if (userAnswer.ToLower() == "y")
                             {
                                 stillShopping = false;
                             }
@@ -92,19 +100,23 @@ namespace Capstone.Classes
                     }
                     else if (input.ToLower() == "q")
                     {
-                        Console.WriteLine("Returning to main menu");
+                        Console.WriteLine("Returning To Main Menu");
                         break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please try again");
                     }
                 }
             }
-            catch (IOException ex)
+            catch (KeyNotFoundException ex)
             {
-                Console.WriteLine("What are you doing, Dave?");
+                Console.WriteLine(" ");
+                Console.WriteLine("This product code does not exist!");
+                Console.WriteLine(" ");
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("Please Try Again");
             }
         }
     }
 }
+
+

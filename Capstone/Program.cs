@@ -9,11 +9,12 @@ namespace Capstone
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             VendingMachine vendingMachine = new VendingMachine();
+            List<VendingMachineItem> customer = new List<VendingMachineItem>();
             MainMenu mainmenu = new MainMenu();
-            mainmenu.Display(vendingMachine);
+            mainmenu.Display(vendingMachine, customer);
         }
     }
 }
