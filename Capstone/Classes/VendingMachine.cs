@@ -12,7 +12,13 @@ namespace Capstone.Classes
 
         private Dictionary<string, List<VendingMachineItem>> Inventory { get; }
 
-        public string[] Slots { get; }
+        public string[] Slots
+        {
+            get
+            {
+                return Inventory.Keys.ToArray();
+            }
+        }
 
         public VendingMachine()
         {
@@ -29,7 +35,15 @@ namespace Capstone.Classes
 
         public VendingMachineItem GetItemAtSlot(string slot)
         {
-            return Inventory[slot][0];
+            if (Inventory[slot].Count > 0)
+            {
+                return Inventory[slot][0];
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public int GetQuantityRemaining(string slot)
@@ -38,16 +52,30 @@ namespace Capstone.Classes
         }
 
         public void Purchase(string slot)
-        {
-               // check if item is in stock - if not, return "out of stock"
+        { 
 
-              // check if user has enough money - if not return "insufficient funds"
+            // check if item is in stock - if not, return "out of stock"
+            if (GetQuantityRemaining(slot) > 0)
+            {
+                // remove item from top of list
+                Inventory[slot].RemoveAt(0);
+                
+                
+                // subtract amount spent from balance            
 
-             // remove item from top of list
-             
-            // subtract amount spent from balance
+                // write message to console IE "You have purchased {item name}"
+            }
+            else
+            {
+                Console.Write("Were friggin walkin here.");
+            }
+            
 
-           // write message to console IE "You have purchased {item name}"
+                // check if user has enough money - if not return "insufficient funds"
+
+
+
+
         }
 
         public Change ReturnChange()
