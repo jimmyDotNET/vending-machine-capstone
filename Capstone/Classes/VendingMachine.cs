@@ -19,20 +19,17 @@ namespace Capstone.Classes
                 return Inventory.Keys.ToArray();
             }
         }
-
         public VendingMachine()
         {
             VendingMachineFileReader vmfr = new VendingMachineFileReader("vend.csv");
-
+        
             Inventory = vmfr.GetInventory();
-
         }
 
         public void FeedMoney(int dollars)
         {
             Balance += dollars;
         }
-
         public VendingMachineItem GetItemAtSlot(string slot)
         {
             if (Inventory[slot].Count > 0)

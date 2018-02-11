@@ -8,19 +8,19 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
-        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger)
         {
             // variables for keeping trak of various user inputs and interactions
             bool stillShopping = true;
+            decimal startingBalance = 0.00m;
             string input;
+
             try
             {
                 PrintHeader();
-
                 while (stillShopping)
                 {
                     // Main Menu
-                    Console.WriteLine($"{DateTime.Now}");
                     Console.WriteLine();
                     Console.WriteLine("Main Menu".PadLeft(15));
                     Console.WriteLine("  ________________________");
@@ -67,7 +67,7 @@ namespace Capstone.Classes
                     {
                         Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);// takes you in to the purchase menu
+                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);// takes you in to the purchase menu
                     }
                     else if (input == "3")
                     {
@@ -80,10 +80,12 @@ namespace Capstone.Classes
                                 Console.WriteLine(item.Consume());
                             }
                             customer.Clear(); // clear out consumed items
+                            startingBalance = vendingMachine.Balance;
                             Console.WriteLine();
                             Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
                             Console.WriteLine();
                             Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
+                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance);
                             Console.WriteLine();
                             Console.Write("Return to Main Menu?:(y/n) "); // ask user if they want to keep using app or leave
                             input = Console.ReadLine();
@@ -120,7 +122,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
                 Console.WriteLine();
-                mainmenu.Display(vendingMachine, customer, mainmenu);
+                mainmenu.Display(vendingMachine, customer, mainmenu, logger);
             }
         }
         private void PrintHeader()

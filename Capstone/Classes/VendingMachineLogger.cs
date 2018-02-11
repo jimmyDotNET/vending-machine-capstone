@@ -17,18 +17,18 @@ namespace Capstone.Classes
             FilePath = filepath;
         }
 
-        public void RecordTransaction(string dateTime, string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance)
-        {
+        public void RecordTransaction(string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance)
+        { 
             try
             {
-                using (StreamWriter logger = new StreamWriter(FilePath))
+                using (StreamWriter logger = new StreamWriter("log.txt", true))
                 {
-
+                    logger.WriteLine($"{DateTime.Now} {transaction}: {startBalance} {transactAmount} {finalBalance}");
                 }
             }
             catch (IOException)
             {
-
+                Console.WriteLine("Sales Logging Error");
             }
         }
         public void SalesRecord(VendingMachineItem item, int amountSold)
