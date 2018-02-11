@@ -20,7 +20,6 @@ namespace Capstone.Classes
         public Dictionary<string, List<VendingMachineItem>> GetInventory()
         {
             Dictionary<string, List<VendingMachineItem>> inventory = new Dictionary<string, List<VendingMachineItem>>();
-
             try
             {
                 using (StreamReader sr = new StreamReader("vend.csv"))

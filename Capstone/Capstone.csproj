@@ -50,7 +50,7 @@
     <Compile Include="Classes\GumItem.cs" />
     <Compile Include="Classes\MainMenu.cs" />
     <Compile Include="Classes\PurchaseMenu.cs" />
-    <Compile Include="Classes\TransactionLogger.cs" />
+    <Compile Include="Classes\VendingMachineLogger.cs" />
     <Compile Include="Classes\VendingMachine.cs" />
     <Compile Include="Classes\VendingMachineFileReader.cs" />
     <Compile Include="Classes\VendingMachineItem.cs" />
@@ -63,7 +63,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="log.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -13,12 +13,13 @@ namespace Capstone.Classes
         {
             try
             {
-                // variables for keeping trak of various user inputs and interactions
-                bool doneWithMenu = false;
+                // variables for keeping track of various user inputs and interactions
+
                 string input;
                 int addedMoney;
                 bool stillShopping = true;
-                while (!doneWithMenu)
+                bool stayInMenu = true;
+                while (stayInMenu)
                 {
                     Console.WriteLine();
                     Console.WriteLine("Purchase Menu");
@@ -36,7 +37,7 @@ namespace Capstone.Classes
                     {
                         Console.Clear();
                         Console.WriteLine();
-                        Console.Write("What Bills Would You Like To Insert?(ie $1, $5, $10, $20): $"); 
+                        Console.Write("What Bills Would You Like To Insert?(ie $1, $5, $10, $20): $");
                         addedMoney = int.Parse(Console.ReadLine()); // prompt user to insert bills of various denominations
                         Console.WriteLine();
 
@@ -81,12 +82,20 @@ namespace Capstone.Classes
 
                             if (input.ToLower() == "y")
                             {
+                                Console.Clear();
                                 stillShopping = false;
+                            }
+                            else if (input.ToLower() == "n")
+                            {
+                                Console.Clear();
+                                stillShopping = true;
                             }
                             else
                             {
-                                stillShopping = true;
-                            }6
+                                Console.Clear();
+                                Console.WriteLine();
+                                Console.WriteLine("Please Select (Y)es Or (N)o");
+                            }
                         }
                     }
                     else if (input == "3")
@@ -106,21 +115,20 @@ namespace Capstone.Classes
             catch (KeyNotFoundException ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Please Make Another Selection");
+                Console.WriteLine("Invalid Product Code");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch (IndexOutOfRangeException ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Please Make Another Selection");
+                Console.WriteLine("Please Make Your Selection Again");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch (NullReferenceException ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Please Make Another Selection");
+                Console.WriteLine("Please Select Another Product");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
-
             }
             catch (FormatException ex)
             {
@@ -128,10 +136,10 @@ namespace Capstone.Classes
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
-            catch(OverflowException)
+            catch (OverflowException)
             {
                 Console.WriteLine();
-                Console.WriteLine("Machine Can't Handle That Much Money!");
+                Console.WriteLine("Machine Can't Handle That Much Money");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
         }

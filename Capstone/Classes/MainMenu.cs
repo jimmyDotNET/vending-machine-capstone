@@ -20,9 +20,10 @@ namespace Capstone.Classes
                 while (stillShopping)
                 {
                     // Main Menu
+                    Console.WriteLine($"{DateTime.Now}");
                     Console.WriteLine();
-                    Console.WriteLine("Main Menu");
-                    Console.WriteLine();
+                    Console.WriteLine("Main Menu".PadLeft(15));
+                    Console.WriteLine("  ________________________");
                     Console.WriteLine("1] >> Display Items");
                     Console.WriteLine("2] >> Purchase Menu");
                     Console.WriteLine("3] >> Complete Transaction");
@@ -71,7 +72,7 @@ namespace Capstone.Classes
                     else if (input == "3")
                     {
                         Console.Clear();
-                        if (customer.Count > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
+                        if (customer.Count > 0 || vendingMachine.Balance > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
                         {
                             Console.WriteLine();
                             foreach (var item in customer)// loop through purchased items and 'cosume' them
@@ -93,6 +94,7 @@ namespace Capstone.Classes
                             }
                             else if (input.ToLower() == "n")
                             {
+                                Console.Clear();
                                 Console.WriteLine();
                                 Console.WriteLine("Thank You - Come Again");
                                 Console.WriteLine();
