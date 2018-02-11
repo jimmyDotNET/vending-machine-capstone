@@ -41,20 +41,22 @@ namespace Capstone.Classes
 
                         // Check to see if the items are in stock or not. If In Stock Print Price, Name and Amount Available. If Out Of Stock Print Out Of Stock
                         int enums = 0;// enumerator int used to keep track of current slot in the foreach loop
+                        Console.WriteLine(" ____________________________________");
                         foreach (var kvp in vendingMachine.Slots)
                         {
                             VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp); // assigning the value at the current slot in the loop to a variable
 
                             if (vmi == null)// if - slot is empty list item as sold out
                             {
-                                Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} - SOLD OUT");
+                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT");
                             }
                             else// else - list key, item, price and quantity
                             {
-                                Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} - {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
+                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)} |");
                             }
                             enums++;// enumerator
                         }
+                        Console.WriteLine(" ____________________________________");
                         Console.WriteLine();
                         Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");// money currently in the machine
                         Console.WriteLine();
@@ -114,6 +116,7 @@ namespace Capstone.Classes
                 Console.WriteLine("Please Make Another Selection");
                 Console.WriteLine();
             }
+            
         }
         private void PrintHeader()
         {

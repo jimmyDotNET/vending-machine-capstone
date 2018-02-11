@@ -23,6 +23,8 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     Console.WriteLine("Purchase Menu");
                     Console.WriteLine();
+                    Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
+                    Console.WriteLine();
                     Console.WriteLine("1] >> Insert Money");
                     Console.WriteLine("2] >> Purchase Items");
                     Console.WriteLine("3] >> Return To Main Menu");
@@ -37,9 +39,7 @@ namespace Capstone.Classes
                         addedMoney = int.Parse(Console.ReadLine()); // prompt user to insert bills of various denominations
                         Console.WriteLine();
 
-                        vendingMachine.FeedMoney(addedMoney);// add the users money in to the machine's balance
-
-                        Console.WriteLine($"Current Balance: ${vendingMachine.Balance}"); 
+                        vendingMachine.FeedMoney(addedMoney);// add the users money in to the machine's balance 
                     }
                     else if (input == "2")
                     {
@@ -47,30 +47,30 @@ namespace Capstone.Classes
                         {
                             int enums = 0;// int for keeping track of current slot
                             Console.WriteLine();
+                            Console.WriteLine(" ____________________________________");
                             foreach (var kvp in vendingMachine.Slots)
                             {
                                 VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp);// assigning the value at the current slot in the loop to a variable
 
                                 if (vmi == null)// if - slot is empty list item as sold out
                                 {
-                                    Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} - SOLD OUT");
+                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} - SOLD OUT");
                                 }
                                 else// else - list key, item, price and quantity
                                 {
-                                    Console.WriteLine($"{vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)}");
+                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)} |");
                                 }
                                 enums++;// enumerator
                             }
+                            Console.WriteLine(" ____________________________________");
                             Console.WriteLine();
                             Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
                             Console.WriteLine();
-
                             Console.Write("Which item would you like to purchase? ");
                             input = Console.ReadLine();
                             Console.WriteLine();
 
                             vendingMachine.Purchase(input, vendingMachine, customer); // perform purchase
-
 
                             Console.WriteLine();
                             Console.Write("Are you done shopping?(y/n): "); // ask user if they would like to keep shopping or not
@@ -125,6 +125,13 @@ namespace Capstone.Classes
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
+                PurchaseMenu purchaseMenu = new PurchaseMenu();
+                purchaseMenu.Display(vendingMachine, customer);
+            }
+            catch(OverflowException)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Machine Can't Handle That Much Money!");
                 PurchaseMenu purchaseMenu = new PurchaseMenu();
                 purchaseMenu.Display(vendingMachine, customer);
             }
