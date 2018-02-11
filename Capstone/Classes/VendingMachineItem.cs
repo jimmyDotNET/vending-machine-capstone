@@ -21,7 +21,7 @@ namespace Capstone.Classes
 
         public virtual string Consume()
         {
-            return "Eat your wheaties";
+            return " ";
         }
     }
 }

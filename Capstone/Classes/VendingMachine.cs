@@ -51,36 +51,40 @@ namespace Capstone.Classes
             return Inventory[slot].Count();
         }
 
-        public void Purchase(string slot, VendingMachine vendingMachine)
+        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer)
         {
+            VendingMachineItem vmi = vendingMachine.GetItemAtSlot(slot);
             // check if item is in stock - if not, return "out of stock"
-            if (GetQuantityRemaining(slot) <= 0)
+            if (vendingMachine.GetQuantityRemaining(slot) == 0 || vmi == null)
             {
-                Console.WriteLine(" ");
+                Console.WriteLine();
                 Console.Write("SOLD OUT!");
-                Console.WriteLine(" ");
+                Console.WriteLine();
 
             }
-            else if (Balance < vendingMachine.GetItemAtSlot(slot).Price)
+            if (Balance < GetItemAtSlot(slot).Price)
             {
                 // check if user has enough money - if not return "insufficient funds"
                 Console.WriteLine(" ");
                 Console.Write("INSUFFICIENT FUNDS!");
                 Console.WriteLine(" ");
             }
-            else
+            else 
             {
+                Console.WriteLine($"Purchasing {vendingMachine.GetItemAtSlot(slot).ItemName}");
                 // remove item from top of list
-                Inventory[slot].RemoveAt(0);
                 // subtract amount spent from balance            
-                Balance -= vendingMachine.GetItemAtSlot(slot).Price;
-                // write message to console IE "You have purchased {item name}" 
+                Balance -= (GetItemAtSlot(slot).Price);  
+                customer.Add(vendingMachine.GetItemAtSlot(slot));
+                Inventory[slot].RemoveAt(0);
             }
         }
 
         public Change ReturnChange()
         {
-            return new Change(Balance);
+            Change change = new Change(Balance);
+            Balance = 0.00m;
+            return change;
         }
     }
 }

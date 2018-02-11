@@ -16,9 +16,11 @@ namespace Capstone.Classes
 
         public decimal Total { get; }
 
+        public string DueChange { get; }
+
         public Change(decimal total)
         {
-
+            
             while (total >= 0.25m)
             {
                 total -= 0.25m;
@@ -34,6 +36,7 @@ namespace Capstone.Classes
                 total -= .5m;
                 Nickels++;
             }
+            DueChange = $"Quarters - {Quarters} | Dimes - {Dimes} | Nickels - {Nickels}";
         }
     }
 }
