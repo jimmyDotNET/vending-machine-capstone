@@ -82,13 +82,11 @@ namespace Capstone.Classes
                             if (input.ToLower() == "y")
                             {
                                 stillShopping = false;
-                                Console.Clear();
                             }
                             else
                             {
                                 stillShopping = true;
-                                Console.Clear();
-                            }
+                            }6
                         }
                     }
                     else if (input == "3")
@@ -100,44 +98,38 @@ namespace Capstone.Classes
                     }
                     else
                     {
-                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
                     }
                 }
             }
-            catch (KeyNotFoundException)
+            catch (KeyNotFoundException ex)
             {
-                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
-            catch (IndexOutOfRangeException)
+            catch (IndexOutOfRangeException ex)
             {
-                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
-                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
 
             }
-            catch (FormatException)
+            catch (FormatException ex)
             {
-                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch(OverflowException)
             {
-                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Machine Can't Handle That Much Money!");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
