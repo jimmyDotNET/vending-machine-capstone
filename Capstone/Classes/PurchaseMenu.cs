@@ -86,7 +86,7 @@ namespace Capstone.Classes
                             else
                             {
                                 stillShopping = true;
-                            }
+                            }6
                         }
                     }
                     else if (input == "3")
