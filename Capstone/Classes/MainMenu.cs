@@ -8,7 +8,7 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
-        public virtual void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu)
         {
             // variables for keeping trak of various user inputs and interactions
             bool stillShopping = true;
@@ -35,6 +35,7 @@ namespace Capstone.Classes
                     // If Option 1, Display All Items in the Inventory
                     if (input == "1")
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Displaying Vending Machine Items");
                         Console.WriteLine();
@@ -48,7 +49,7 @@ namespace Capstone.Classes
 
                             if (vmi == null)// if - slot is empty list item as sold out
                             {
-                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT");
+                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
                             }
                             else// else - list key, item, price and quantity
                             {
@@ -63,11 +64,13 @@ namespace Capstone.Classes
                     }
                     else if (input == "2")
                     {
+                        Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer);// takes you in to the purchase menu
+                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);// takes you in to the purchase menu
                     }
                     else if (input == "3")
                     {
+                        Console.Clear();
                         if (customer.Count > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
                         {
                             Console.WriteLine();
@@ -104,9 +107,9 @@ namespace Capstone.Classes
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
-
                     }
                 }
             }
@@ -115,8 +118,8 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
                 Console.WriteLine();
+                mainmenu.Display(vendingMachine, customer, mainmenu);
             }
-            
         }
         private void PrintHeader()
         {

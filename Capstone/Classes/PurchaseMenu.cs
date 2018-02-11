@@ -9,7 +9,7 @@ namespace Capstone.Classes
 {
     public class PurchaseMenu : MainMenu
     {
-        public override void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, PurchaseMenu purchaseMenu)
         {
             try
             {
@@ -34,15 +34,18 @@ namespace Capstone.Classes
 
                     if (input == "1")
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.Write("What Bills Would You Like To Insert?(ie $1, $5, $10, $20): $"); 
                         addedMoney = int.Parse(Console.ReadLine()); // prompt user to insert bills of various denominations
                         Console.WriteLine();
 
                         vendingMachine.FeedMoney(addedMoney);// add the users money in to the machine's balance 
+                        Console.Clear();
                     }
                     else if (input == "2")
                     {
+                        Console.Clear();
                         while (stillShopping)
                         {
                             int enums = 0;// int for keeping track of current slot
@@ -54,7 +57,7 @@ namespace Capstone.Classes
 
                                 if (vmi == null)// if - slot is empty list item as sold out
                                 {
-                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} - SOLD OUT");
+                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} - SOLD OUT                      |");
                                 }
                                 else// else - list key, item, price and quantity
                                 {
@@ -88,6 +91,7 @@ namespace Capstone.Classes
                     }
                     else if (input == "3")
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Returning To Main Menu");
                         break;
@@ -103,37 +107,32 @@ namespace Capstone.Classes
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
-                purchaseMenu.Display(vendingMachine, customer);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch (IndexOutOfRangeException ex)
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
-                purchaseMenu.Display(vendingMachine, customer);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch (NullReferenceException ex)
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
-                purchaseMenu.Display(vendingMachine, customer);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
 
             }
             catch (FormatException ex)
             {
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
-                purchaseMenu.Display(vendingMachine, customer);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
             catch(OverflowException)
             {
                 Console.WriteLine();
                 Console.WriteLine("Machine Can't Handle That Much Money!");
-                PurchaseMenu purchaseMenu = new PurchaseMenu();
-                purchaseMenu.Display(vendingMachine, customer);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu);
             }
         }
     }

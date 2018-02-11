@@ -11,10 +11,10 @@ namespace Capstone
     {
         public static void Main(string[] args)
         {
-            VendingMachine vendingMachine = new VendingMachine();
-            List<VendingMachineItem> customer = new List<VendingMachineItem>();
-            MainMenu mainmenu = new MainMenu();
-            mainmenu.Display(vendingMachine, customer); // error trace starts here
+            VendingMachine vendingMachine = new VendingMachine(); // create the vending machine we will be using
+            List<VendingMachineItem> customer = new List<VendingMachineItem>(); // create a list to store purchased items
+            MainMenu mainmenu = new MainMenu(); // create the menu UI
+            mainmenu.Display(vendingMachine, customer, mainmenu); // display the UI
         }
     }
 }
