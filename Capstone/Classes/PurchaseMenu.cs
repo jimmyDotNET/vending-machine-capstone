@@ -9,7 +9,7 @@ namespace Capstone.Classes
 {
     public class PurchaseMenu : MainMenu
     {
-        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, PurchaseMenu purchaseMenu, VendingMachineLogger logger)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, PurchaseMenu purchaseMenu, VendingMachineLogger logger, Dictionary<string, int> salesAudit)
         {
             // variables for keeping track of various user inputs and interaction
             string input;
@@ -50,7 +50,7 @@ namespace Capstone.Classes
 
                         vendingMachine.FeedMoney(addedMoney);// add the users money in to the machine's balance 
 
-                        logger.RecordTransaction("FEED MONEY: ", startingBalance, moneyFed, vendingMachine.Balance);
+                        logger.RecordTransaction("FEED MONEY: ", startingBalance, moneyFed, vendingMachine.Balance, salesAudit);
 
                         Console.Clear();
                     }
@@ -65,10 +65,10 @@ namespace Capstone.Classes
                             foreach (var kvp in vendingMachine.Slots)
                             {
                                 VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp);// assigning the value at the current slot in the loop to a variable
-
+                                
                                 if (vmi == null)// if - slot is empty list item as sold out
                                 {
-                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} - SOLD OUT                      |");
+                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
                                 }
                                 else// else - list key, item, price and quantity
                                 {
@@ -80,36 +80,26 @@ namespace Capstone.Classes
                             Console.WriteLine();
                             Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
                             Console.WriteLine();
-                            Console.Write("Which item would you like to purchase? ");
+                            Console.Write("Which item would you like to purchase(press Q to leave)? ");
                             input = Console.ReadLine();
                             Console.WriteLine();
 
-                            price = vendingMachine.GetItemAtSlot(input).Price;
-                            startingBalance = vendingMachine.Balance;
-                            item = vendingMachine.GetItemAtSlot(input).ItemName;
-                            vendingMachine.Purchase(input, vendingMachine, customer); // perform purchase
-
-                            logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance);
-
-                            Console.WriteLine();
-                            Console.Write("Are you done shopping?(y/n): "); // ask user if they would like to keep shopping or not
-                            input = Console.ReadLine();
-
-                            if (input.ToLower() == "y")
+                            if (input.ToLower() == "q")
                             {
                                 Console.Clear();
-                                stillShopping = false;
-                            }
-                            else if (input.ToLower() == "n")
-                            {
-                                Console.Clear();
-                                stillShopping = true;
+                                Console.WriteLine("Returning To Purchase Menu");
+                                break;
                             }
                             else
                             {
                                 Console.Clear();
-                                Console.WriteLine();
-                                Console.WriteLine("Please Select (Y)es Or (N)o");
+                                price = vendingMachine.GetItemAtSlot(input).Price;
+                                startingBalance = vendingMachine.Balance;
+                                item = vendingMachine.GetItemAtSlot(input).ItemName;
+                                vendingMachine.Purchase(input, vendingMachine, customer); // perform purchase
+
+                                logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance, salesAudit); // log the transactions
+                                break;
                             }
                         }
                     }
@@ -122,6 +112,7 @@ namespace Capstone.Classes
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
                     }
@@ -129,33 +120,38 @@ namespace Capstone.Classes
             }
             catch (KeyNotFoundException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Invalid Product Code");
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (IndexOutOfRangeException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Your Selection Again");
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (NullReferenceException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Select Another Product");
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (FormatException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (OverflowException)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Machine Can't Handle That Much Money");
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
         }
     }
