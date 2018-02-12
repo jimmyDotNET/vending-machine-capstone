@@ -8,23 +8,18 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
-        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger, Dictionary<string, int> salesAudit)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger)
         {
-            // variables for keeping trak of various user inputs and interactions
+            System.Media.SoundPlayer boom = new System.Media.SoundPlayer(@".\bomb_x.wav");
+            // :)
+            System.Media.SoundPlayer click = new System.Media.SoundPlayer(@".\click_x.wav");
+
+            // variables for keeping trak of if user is still in menu and starting balance for logging
             bool stillShopping = true;
             decimal startingBalance = 0.00m;
-            string input;
 
             try
             {
-                if (salesAudit.Count == 0 && salesAudit.Count < 16)
-                {
-                    for (int i = 0; i < vendingMachine.Slots.Length; i++)
-                    {
-                        salesAudit.Add(vendingMachine.GetItemAtSlot(vendingMachine.Slots[i]).ItemName, 0);
-                    }
-                }
-
                 PrintHeader();
 
                 while (stillShopping)
@@ -41,11 +36,12 @@ namespace Capstone.Classes
 
                     // Asking User Which Option They Want
                     Console.Write("What option do you want to select?: ");
-                    input = Console.ReadLine();
+                    ConsoleKeyInfo key = Console.ReadKey();
 
                     // If Option 1, Display All Items in the Inventory
-                    if (input == "1")
+                    if (key.KeyChar == '1')
                     {
+                        click.Play();
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Displaying Vending Machine Items");
@@ -73,14 +69,16 @@ namespace Capstone.Classes
                         Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");// money currently in the machine
                         Console.WriteLine();
                     }
-                    else if (input == "2")
+                    else if (key.KeyChar == '2')
                     {
+                        click.Play();
                         Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);// takes you in to the purchase menu
+                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);// takes you in to the purchase menu
                     }
-                    else if (input == "3")
+                    else if (key.KeyChar == '3')
                     {
+                        click.Play();
                         Console.Clear();
                         if (customer.Count > 0 || vendingMachine.Balance > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
                         {
@@ -95,7 +93,7 @@ namespace Capstone.Classes
                             Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
                             Console.WriteLine();
                             Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
-                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance, salesAudit);
+                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance);
                             Console.WriteLine();
 
                             //logger.TotalSalesLog(salesAudit, vendingMachine); // this was where we were trying to log the running sales total and running items sold total
@@ -108,8 +106,9 @@ namespace Capstone.Classes
                             Console.WriteLine("There Is No Transaction To Complete");
                         }
                     }
-                    else if (input.ToLower() == "q" && customer.Count == 0 && vendingMachine.Balance == 0)
+                    else if (key.KeyChar == 'q' || key.KeyChar == 'Q' && customer.Count == 0 && vendingMachine.Balance == 0)
                     {
+                        click.Play();
                         Console.Clear();
                         Console.WriteLine();
                         stillShopping = false;
@@ -118,13 +117,17 @@ namespace Capstone.Classes
                     {
                         Console.Clear();
                         Console.WriteLine();
-                        Console.WriteLine("Please Select A Valid Menu Option Or Select Complete Transaction To Return Your Money");
+                        Console.WriteLine("Please Select A Valid Menu Option Select Complete Transaction To Return Your Money");
+                        Console.WriteLine();
+                        Console.WriteLine("Select Complete Transaction To Return Your Money");
                     }
                 }
             }
-            catch (IndexOutOfRangeException)
+            catch (KeyNotFoundException)
             {
-
+                boom.Play();
+                Console.WriteLine();
+                Console.WriteLine("Please Make Another Selection");
             }
         }
         private void PrintHeader()

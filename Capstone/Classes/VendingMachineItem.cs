@@ -18,7 +18,7 @@ namespace Capstone.Classes
 
             Price = price;
         }
-
+    
         public virtual string Consume()
         {
             return " ";

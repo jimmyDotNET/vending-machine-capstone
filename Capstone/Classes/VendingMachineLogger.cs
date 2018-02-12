@@ -17,7 +17,7 @@ namespace Capstone.Classes
             FilePath = filepath;
         }
 
-        public void RecordTransaction(string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance, Dictionary<string, int> salesAudit)
+        public void RecordTransaction(string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance)
         {
             try
             {
