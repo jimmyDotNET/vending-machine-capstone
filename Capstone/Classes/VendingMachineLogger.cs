@@ -33,7 +33,7 @@ namespace Capstone.Classes
         }
         public void TotalSalesLog(Dictionary<string, int> salesAudit, VendingMachine vendingMachine)
         {
-            try
+            try // this is what remains of our attempt to make a running sales total / total items sold log
             {
                 StreamWriter audit = new StreamWriter("sales-log.txt", true);
                 using (StreamReader sr = new StreamReader("log.txt"))

@@ -19,7 +19,7 @@ namespace CapstoneTests
 
             inventory = vmfr.GetInventory();
 
-            VendingMachineItem result = vendingMachine.GetItemAtSlot("B1");
+            string result = vendingMachine.GetItemAtSlot("B1").ItemName;
 
             Assert.AreEqual("Moonpie", result);
         }
