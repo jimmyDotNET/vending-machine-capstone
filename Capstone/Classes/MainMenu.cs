@@ -36,6 +36,7 @@ namespace Capstone.Classes
                     Console.WriteLine("1] >> Display Items");
                     Console.WriteLine("2] >> Purchase Menu");
                     Console.WriteLine("3] >> Complete Transaction");
+                    Console.WriteLine("Q] >> Quit");
                     Console.WriteLine();
 
                     // Asking User Which Option They Want
@@ -97,21 +98,27 @@ namespace Capstone.Classes
                             logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance, salesAudit);
                             Console.WriteLine();
 
-                            //logger.TotalSalesLog(salesAudit, vendingMachine);
-                            break;
-                        }
-                        // else if - input tolower == q && customer.Count == 0 && vendingMachine.Balance == 0 - break loop and quit program ***PREVENT USER FROM LEAVING IF THERE IS ITEMS TO CONSUME || CHANGE TO RETURN  
-                        else // else - prevent customer from even prodding this area if they have items to consume and change to return
+                            //logger.TotalSalesLog(salesAudit, vendingMachine); // this was where we were trying to log the running sales total and running items sold total
+                            stillShopping = false;
+                        } 
+                        else // else - prevent customer from even prodding this area if they don't have items to consume and change to return
                         {
+                            Console.Clear();
                             Console.WriteLine();
                             Console.WriteLine("There Is No Transaction To Complete");
                         }
+                    }
+                    else if (input.ToLower() == "q" && customer.Count == 0 && vendingMachine.Balance == 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine();
+                        stillShopping = false;
                     }
                     else
                     {
                         Console.Clear();
                         Console.WriteLine();
-                        Console.WriteLine("Please Select A Valid Menu Option");
+                        Console.WriteLine("Please Select A Valid Menu Option Or Select Complete Transaction To Return Your Money");
                     }
                 }
             }

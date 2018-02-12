@@ -68,7 +68,7 @@ namespace Capstone.Classes
                                 
                                 if (vmi == null)// if - slot is empty list item as sold out
                                 {
-                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} - SOLD OUT                      |");
+                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
                                 }
                                 else// else - list key, item, price and quantity
                                 {
@@ -98,32 +98,9 @@ namespace Capstone.Classes
                                 item = vendingMachine.GetItemAtSlot(input).ItemName;
                                 vendingMachine.Purchase(input, vendingMachine, customer); // perform purchase
 
-                                logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance, salesAudit);
+                                logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance, salesAudit); // log the transactions
                                 break;
                             }
-
-
-
-                            //Console.WriteLine();
-                            //Console.Write("Are you done shopping?(y/n): "); // ask user if they would like to keep shopping or not
-                            //input = Console.ReadLine();
-
-                            //if (input.ToLower() == "y")
-                            //{
-                            //    Console.Clear();
-                            //    stillShopping = false;
-                            //}
-                            //else if (input.ToLower() == "n")
-                            //{
-                            //    Console.Clear();
-                            //    stillShopping = true;
-                            //}
-                            //else
-                            //{
-                            //    Console.Clear();
-                            //    Console.WriteLine();
-                            //    Console.WriteLine("Please Select (Y)es Or (N)o");
-                            //}
                         }
                     }
                     else if (input == "3")
@@ -135,6 +112,7 @@ namespace Capstone.Classes
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
                     }
@@ -142,30 +120,35 @@ namespace Capstone.Classes
             }
             catch (KeyNotFoundException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Invalid Product Code");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (IndexOutOfRangeException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Your Selection Again");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (NullReferenceException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Select Another Product");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (FormatException ex)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
             }
             catch (OverflowException)
             {
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Machine Can't Handle That Much Money");
                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);
