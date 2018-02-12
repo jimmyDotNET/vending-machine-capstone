@@ -50,11 +50,17 @@
     <Compile Include="Classes\GumItem.cs" />
     <Compile Include="Classes\MainMenu.cs" />
     <Compile Include="Classes\PurchaseMenu.cs" />
-    <Compile Include="Classes\VendingMachineLogger.cs" />
+    <Compile Include="Classes\VendingMachineLogger.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Classes\VendingMachine.cs" />
-    <Compile Include="Classes\VendingMachineFileReader.cs" />
+    <Compile Include="Classes\VendingMachineFileReader.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Classes\VendingMachineItem.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Program.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

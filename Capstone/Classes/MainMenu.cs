@@ -8,7 +8,7 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
-        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger)
+        public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger, Dictionary<string, int> salesAudit)
         {
             // variables for keeping trak of various user inputs and interactions
             bool stillShopping = true;
@@ -17,7 +17,16 @@ namespace Capstone.Classes
 
             try
             {
+                if (salesAudit.Count == 0 && salesAudit.Count < 16)
+                {
+                    for (int i = 0; i < vendingMachine.Slots.Length; i++)
+                    {
+                        salesAudit.Add(vendingMachine.GetItemAtSlot(vendingMachine.Slots[i]).ItemName, 0);
+                    }
+                }
+
                 PrintHeader();
+
                 while (stillShopping)
                 {
                     // Main Menu
@@ -67,7 +76,7 @@ namespace Capstone.Classes
                     {
                         Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);// takes you in to the purchase menu
+                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger, salesAudit);// takes you in to the purchase menu
                     }
                     else if (input == "3")
                     {
@@ -85,24 +94,13 @@ namespace Capstone.Classes
                             Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
                             Console.WriteLine();
                             Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
-                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance);
+                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance, salesAudit);
                             Console.WriteLine();
-                            Console.Write("Return to Main Menu?:(y/n) "); // ask user if they want to keep using app or leave
-                            input = Console.ReadLine();
 
-                            if (input.ToLower() == "y")
-                            {
-                                stillShopping = true; // return to top of main menu loop
-                            }
-                            else if (input.ToLower() == "n")
-                            {
-                                Console.Clear();
-                                Console.WriteLine();
-                                Console.WriteLine("Thank You - Come Again");
-                                Console.WriteLine();
-                                stillShopping = false; // break main menu loop and leave the program 
-                            }
+                            //logger.TotalSalesLog(salesAudit, vendingMachine);
+                            break;
                         }
+                        // else if - input tolower == q && customer.Count == 0 && vendingMachine.Balance == 0 - break loop and quit program ***PREVENT USER FROM LEAVING IF THERE IS ITEMS TO CONSUME || CHANGE TO RETURN  
                         else // else - prevent customer from even prodding this area if they have items to consume and change to return
                         {
                             Console.WriteLine();
@@ -117,12 +115,9 @@ namespace Capstone.Classes
                     }
                 }
             }
-            catch (InvalidOperationException ex)
+            catch (IndexOutOfRangeException)
             {
-                Console.WriteLine();
-                Console.WriteLine("Please Make Another Selection");
-                Console.WriteLine();
-                mainmenu.Display(vendingMachine, customer, mainmenu, logger);
+
             }
         }
         private void PrintHeader()

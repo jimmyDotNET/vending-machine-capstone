@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Capstone.Classes
 {
-    public class VendingMachineLogger
+    public class VendingMachineLogger : MainMenu
     {
 
         private string FilePath;
@@ -17,8 +17,8 @@ namespace Capstone.Classes
             FilePath = filepath;
         }
 
-        public void RecordTransaction(string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance)
-        { 
+        public void RecordTransaction(string transaction, decimal startBalance, decimal transactAmount, decimal finalBalance, Dictionary<string, int> salesAudit)
+        {
             try
             {
                 using (StreamWriter logger = new StreamWriter("log.txt", true))
@@ -31,17 +31,37 @@ namespace Capstone.Classes
                 Console.WriteLine("Sales Logging Error");
             }
         }
-        public void SalesRecord(VendingMachineItem item, int amountSold)
+        public void TotalSalesLog(Dictionary<string, int> salesAudit, VendingMachine vendingMachine)
         {
             try
             {
+                StreamWriter audit = new StreamWriter("sales-log.txt", true);
+                using (StreamReader sr = new StreamReader("log.txt"))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
 
+                        foreach (var kvp in salesAudit)
+                        {
+                            if (line.Contains(kvp.Key.ToString()))
+                            {
+                                salesAudit[kvp.Key] += 1;
+                            }
+                        }
+                        foreach (var kvp in salesAudit)
+                        {
+                            audit.WriteLine($"{kvp.Key} {kvp.Value}");
+                        }
+                    }
+                }
             }
-            catch
+            catch (IOException)
             {
 
             }
-
         }
     }
 }
+
+
