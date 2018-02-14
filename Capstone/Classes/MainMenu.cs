@@ -71,9 +71,11 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == '2')
                     {
+                        stayInMenu = false;
                         Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);// takes you in to the purchase menu
+                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                        break;// takes you in to the purchase menu
                     }                                                                                  // turn this in to a method during refactor
                     else if (key.KeyChar == '3')
                     {

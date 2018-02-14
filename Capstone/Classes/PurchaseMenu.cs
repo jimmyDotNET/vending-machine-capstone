@@ -96,7 +96,7 @@ namespace Capstone.Classes
                                 Console.Clear();
                                 Console.WriteLine("Returning To Purchase Menu");
 
-                                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                                break;
                             }
                             else
                             {
@@ -110,7 +110,7 @@ namespace Capstone.Classes
 
                                 logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); // log the transactions
 
-                                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+                                break;
                             }
                         }
                     }
