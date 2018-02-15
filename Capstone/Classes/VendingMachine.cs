@@ -54,7 +54,8 @@ namespace Capstone.Classes
                 mainmenu.ErrorBuzz();
                 Console.WriteLine();
             }
-            if (Balance < GetItemAtSlot(slot).Price)// check if user has enough money - if not return "insufficient funds"
+            // check if user has enough money - if not return "insufficient funds"
+            if (Balance < GetItemAtSlot(slot).Price)
             {
                 Console.Clear();
                 Console.WriteLine();
@@ -65,16 +66,19 @@ namespace Capstone.Classes
             else 
             {
                 Console.WriteLine();
+                // return what item has been purchased
                 Console.WriteLine($"Purchased {vendingMachine.GetItemAtSlot(slot).ItemName}");
-                // remove item from top of list
-                // subtract amount spent from balance            
-                Balance -= (GetItemAtSlot(slot).Price);  
+                // subtract price of item from balance            
+                Balance -= (GetItemAtSlot(slot).Price);
+                // add item to customer bin ( list )
                 customer.Add(vendingMachine.GetItemAtSlot(slot));
+                // remove purchased item from inventory
                 Inventory[slot].RemoveAt(0);
             }
         }
-        public Change ReturnChange()
+        public Change Change()
         {
+            // creates an instance of the object containing the make change functions 
             Change change = new Change(Balance);
             Balance = 0.00m;
             return change;

@@ -13,7 +13,7 @@ namespace Capstone.Classes
         {
             try
             {
-                // variables for keeping track of if user is still in menu and starting balance for logging
+                // variables for keeping track of user inputs
                 bool stayInMenu = true;
                 ConsoleKeyInfo key;
 
@@ -30,21 +30,24 @@ namespace Capstone.Classes
                     Console.WriteLine("Q] >> Quit");
                     Console.WriteLine();
 
-                    // Asking User Which Option They Want
+                    // prompt user to select an option 
+
                     Console.Write("Select Your Option: ");
 
                     key = Console.ReadKey();
                     ButtonClick();
 
-                    // If Option 1, Display All Items In The Inventory
+                   
                     if (key.KeyChar == '1')
                     {
+                        // displays all items in the inventory
                         Console.Clear();
                         DisplayMachineItems(vendingMachine);
                     }
-                    // If Option 2, Display The Purchase Menu
+                    
                     else if (key.KeyChar == '2')
                     {
+                        // display purchase menu
                         stayInMenu = false;
                         Console.Clear();
                         DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
@@ -52,6 +55,7 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == '3')
                     {
+                        // return any due change and consume items, then terminate the program
                         Console.Clear();
                         stayInMenu = false;
                         CompleteTransaction(vendingMachine.Balance, vendingMachine, customer, logger, mainmenu);
@@ -59,6 +63,7 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar.ToString().ToLower() == "q" && customer.Count == 0 && vendingMachine.Balance == 0)
                     {
+                        // quits the program IF the user isn't due any change AND no items to consume
                         stayInMenu = false;
                         Console.Clear();
                         Console.WriteLine();
@@ -68,6 +73,7 @@ namespace Capstone.Classes
                     }
                     else
                     {
+                        // error catch to prevent invalid input or leaving without returning change and taking items
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");

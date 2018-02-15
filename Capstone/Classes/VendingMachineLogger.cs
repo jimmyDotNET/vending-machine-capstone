@@ -27,7 +27,7 @@ namespace Capstone.Classes
                 }
                 using (StreamWriter logger = new StreamWriter(FilePath, true))
                 {
-                    logger.WriteLine($"{DateTime.Now} {transaction}: {startBalance} {transactAmount} {finalBalance}");
+                    logger.WriteLine($"{DateTime.Now} {transaction} : {startBalance} {transactAmount} {finalBalance}");
                 }
             }
             catch (IOException)

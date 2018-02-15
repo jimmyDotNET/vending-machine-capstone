@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Classes
 {
+    // this is a super class to hold all functions performed in main menu and sub menu(s)
     public class MenuCLI : VendingMachine
     {
         public void PrintHeader()
@@ -62,7 +63,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
                 Console.WriteLine();
-                Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
+                Console.WriteLine(vendingMachine.Change().DueChange); // prints change in least amount of quarters, dimes and nickels
                 logger.RecordTransaction("GIVE CHANGE ", startBal, startBal, vendingMachine.Balance);
                 Console.WriteLine();
                 Console.WriteLine("Thank You Come Again");
@@ -80,24 +81,36 @@ namespace Capstone.Classes
                 mainmenu.Display(vendingMachine, customer, mainmenu, logger);
             }
         }
+        /// <summary>
+        /// plays a click sound to enhance realism
+        /// </summary>
         public void ButtonClick()
         {
             System.Media.SoundPlayer click = new System.Media.SoundPlayer(@"Sound\click_x.wav");
             click.PlaySync();
         }
+        /// <summary>
+        /// plays buzzer to indicate invalid input or error
+        /// </summary>
         public void ErrorBuzz()
         {
             System.Media.SoundPlayer error = new System.Media.SoundPlayer(@"Sound\fail-buzzer.wav");
             error.PlaySync();
         }
+        /// <summary>
+        /// plays the menu music
+        /// </summary>
         public void MenuMusic()
         {
             System.Media.SoundPlayer loop = new System.Media.SoundPlayer(@"Sound\Elevator-music.wav");
             loop.PlayLooping();
         }
+        /// <summary>
+        /// delays thread so user can read the amount of change they recieve and certain error messages
+        /// </summary>
         public void Delay()
         {
-            System.Threading.Thread.Sleep(2200);
+            System.Threading.Thread.Sleep(2500);
         }
     }
 }
