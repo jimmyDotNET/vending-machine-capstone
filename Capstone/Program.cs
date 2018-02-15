@@ -15,6 +15,7 @@ namespace Capstone
             VendingMachineLogger logger = new VendingMachineLogger("log.txt"); // creating an instance of the file logger
             List<VendingMachineItem> customer = new List<VendingMachineItem>(); // create a list to store purchased items
             MainMenu mainmenu = new MainMenu(); // create the menu UI
+
             mainmenu.Display(vendingMachine, customer, mainmenu, logger); // display the UI
         }
     }

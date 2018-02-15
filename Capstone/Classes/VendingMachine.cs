@@ -43,20 +43,18 @@ namespace Capstone.Classes
         {
             return Inventory[slot].Count();
         }
-        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu)
+        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer)
         {
             VendingMachineItem vmi = vendingMachine.GetItemAtSlot(slot);
             // check if item is in stock - if not, return "out of stock"
             if (vendingMachine.GetQuantityRemaining(slot) == 0 || vmi == null)
             {
-                mainmenu.FatalErrorSound();
                 Console.WriteLine();
                 Console.Write("SOLD OUT!");
                 Console.WriteLine();
             }
             if (Balance < GetItemAtSlot(slot).Price)// check if user has enough money - if not return "insufficient funds"
             {
-                mainmenu.FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.Write("INSUFFICIENT FUNDS!");
@@ -64,7 +62,7 @@ namespace Capstone.Classes
             }
             else 
             {
-                Console.WriteLine($"Purchasing {vendingMachine.GetItemAtSlot(slot).ItemName}");
+                Console.WriteLine($"Purchased {vendingMachine.GetItemAtSlot(slot).ItemName}");
                 // remove item from top of list
                 // subtract amount spent from balance            
                 Balance -= (GetItemAtSlot(slot).Price);  

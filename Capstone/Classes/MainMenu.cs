@@ -19,7 +19,7 @@ namespace Capstone.Classes
                 ConsoleKeyInfo key;
 
                 PrintHeader();
-
+               
                 while (stayInMenu)
                 {
                     MenuMusic();
@@ -34,7 +34,7 @@ namespace Capstone.Classes
                     Console.WriteLine();
 
                     // Asking User Which Option They Want
-                    Console.Write("What option do you want to select?: ");
+                    Console.Write("Select Your Option: ");
 
                     key = Console.ReadKey();
                     ButtonClick();
@@ -43,10 +43,6 @@ namespace Capstone.Classes
                     if (key.KeyChar == '1')
                     {
                         Console.Clear();
-                        Console.WriteLine();
-                        Console.WriteLine("Displaying Vending Machine Items");
-                        Console.WriteLine();
-
                         // Check to see if the items are in stock or not. If In Stock Print Price, Name and Amount Available. If Out Of Stock Print Out Of Stock
                         int enums = 0;// enumerator int used to keep track of current slot in the foreach loop
                         Console.WriteLine(" ____________________________________");
@@ -73,10 +69,9 @@ namespace Capstone.Classes
                     {
                         stayInMenu = false;
                         Console.Clear();
-                        PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
-                        purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
-                        break;// takes you in to the purchase menu
-                    }                                                                                  // turn this in to a method during refactor
+                        DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
+                        break;
+                    }                                                                              
                     else if (key.KeyChar == '3')
                     {
                         Console.Clear();
@@ -100,7 +95,7 @@ namespace Capstone.Classes
                             Console.WriteLine();
                             Delay();
                             Console.Clear();
-                            mainmenu.Display(vendingMachine, customer, mainmenu, logger);
+                            break;
                         } 
                         else // else - prevent customer from even prodding this area if they don't have items to consume and change to return
                         {
@@ -137,7 +132,6 @@ namespace Capstone.Classes
             }
             catch (KeyNotFoundException)
             {
-
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
@@ -150,6 +144,15 @@ namespace Capstone.Classes
             Console.WriteLine();
             Console.WriteLine("Welcome to Vend-O-Matic!");
             Console.WriteLine();
+        }
+        public void DisplaySubMenu(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger)
+        {
+            PurchaseMenu purchaseMenu = new PurchaseMenu();
+            purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
+        }
+        public void MakePurchase(string item, VendingMachine vendingMachine, List<VendingMachineItem> customer)
+        {
+            vendingMachine.Purchase(item, vendingMachine, customer);
         }
         public void ButtonClick()
         {
