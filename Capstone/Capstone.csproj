@@ -70,10 +70,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sounds\bomb_x.wav" />
-    <Content Include="Sounds\click_x.wav" />
-    <Content Include="Sounds\Elevator-music.wav" />
-    <Content Include="Sounds\fail-buzzer.wav" />
+    <EmbeddedResource Include="Sound\fail-buzzer.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sound\click_x.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sound\Elevator-music.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
