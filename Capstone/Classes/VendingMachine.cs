@@ -21,7 +21,7 @@ namespace Capstone.Classes
         }
         public VendingMachine()
         {
-            VendingMachineFileReader vmfr = new VendingMachineFileReader("vend.csv");
+            VendingMachineFileReader vmfr = new VendingMachineFileReader(@"vend.csv");
             Inventory = vmfr.GetInventory();
         }
         public void FeedMoney(int dollars)
@@ -43,7 +43,7 @@ namespace Capstone.Classes
         {
             return Inventory[slot].Count();
         }
-        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer)
+        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu)
         {
             VendingMachineItem vmi = vendingMachine.GetItemAtSlot(slot);
             // check if item is in stock - if not, return "out of stock"
@@ -51,6 +51,7 @@ namespace Capstone.Classes
             {
                 Console.WriteLine();
                 Console.Write("SOLD OUT!");
+                mainmenu.ErrorBuzz();
                 Console.WriteLine();
             }
             if (Balance < GetItemAtSlot(slot).Price)// check if user has enough money - if not return "insufficient funds"
@@ -58,10 +59,12 @@ namespace Capstone.Classes
                 Console.Clear();
                 Console.WriteLine();
                 Console.Write("INSUFFICIENT FUNDS!");
+                mainmenu.ErrorBuzz();
                 Console.WriteLine();
             }
             else 
             {
+                Console.WriteLine();
                 Console.WriteLine($"Purchased {vendingMachine.GetItemAtSlot(slot).ItemName}");
                 // remove item from top of list
                 // subtract amount spent from balance            

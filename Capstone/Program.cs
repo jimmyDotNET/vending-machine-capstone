@@ -12,10 +12,10 @@ namespace Capstone
         public static void Main(string[] args)
         {
             VendingMachine vendingMachine = new VendingMachine(); // create the vending machine we will be using
-            VendingMachineLogger logger = new VendingMachineLogger("log.txt"); // creating an instance of the file logger
+            VendingMachineLogger logger = new VendingMachineLogger(@"Logs\log.txt"); // creating an instance of the file logger, located in debug folder
             List<VendingMachineItem> customer = new List<VendingMachineItem>(); // create a list to store purchased items
             MainMenu mainmenu = new MainMenu(); // create the menu UI
-
+            mainmenu.PrintHeader();
             mainmenu.Display(vendingMachine, customer, mainmenu, logger); // display the UI
         }
     }

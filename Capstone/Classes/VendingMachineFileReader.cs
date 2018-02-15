@@ -22,7 +22,7 @@ namespace Capstone.Classes
             Dictionary<string, List<VendingMachineItem>> inventory = new Dictionary<string, List<VendingMachineItem>>();
             try
             {
-                using (StreamReader sr = new StreamReader("vend.csv"))
+                using (StreamReader sr = new StreamReader(FilePath))
                 {
                     while (!sr.EndOfStream)
                     {
@@ -59,7 +59,7 @@ namespace Capstone.Classes
                     }
                 }
             }
-            catch(IOException ex)
+            catch(IOException)
             {
                 Console.WriteLine("There was an error");
             }

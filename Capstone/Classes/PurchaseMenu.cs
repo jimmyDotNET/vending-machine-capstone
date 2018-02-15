@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace Capstone.Classes
 {
@@ -20,15 +19,14 @@ namespace Capstone.Classes
                 decimal startingBalance = 0.00m;
                 decimal moneyFed = 0.00m;
                 decimal price = 0.00m;
-                bool stillShopping = true;
-                bool stayInMenu = true;
+                bool stayInSubMenu = true;
                 string item;
-                while (stayInMenu)
+                while (stayInSubMenu)
                 {
                     MenuMusic();
                     Console.WriteLine();
-                    Console.WriteLine("Purchase Menu".PadLeft(15));
-                    Console.WriteLine();
+                    Console.WriteLine("Purchase Menu".PadLeft(18));
+                    Console.WriteLine("  ________________________");
                     Console.WriteLine("1] >> Insert Money");
                     Console.WriteLine("2] >> Purchase Items");
                     Console.WriteLine("3] >> Return To Main Menu");
@@ -52,7 +50,7 @@ namespace Capstone.Classes
                         ButtonClick();
                         if (addedMoney <= 5 && addedMoney > 0)
                         {
-                            stayInMenu = false;
+                            stayInSubMenu = false;
                             Console.WriteLine();
                             startingBalance = vendingMachine.Balance;
                             moneyFed = addedMoney + 0.00m;
@@ -72,85 +70,73 @@ namespace Capstone.Classes
                     else if (key.KeyChar == '2')
                     {
                         Console.Clear();
-                        while (stillShopping)
+
+                        DisplayMachineItems(vendingMachine);
+                        Console.WriteLine();
+                        Console.Write("Which item would you like to purchase(press Q to leave)? ");
+
+                        input = Console.ReadLine();
+                        ButtonClick();
+
+                        if (input.ToLower() == "q")
                         {
-                            DisplayMachineItems(vendingMachine);
-                            Console.WriteLine();
-                            Console.Write("Which item would you like to purchase(press Q to leave)? ");
-
-                            input = Console.ReadLine();
-                            ButtonClick();
-
-                            if (input.ToLower() == "q")
-                            {
-                                stillShopping = false;
-                                Console.Clear();
-                                Console.WriteLine("Returning To Purchase Menu");
-                                DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
-                                break;
-                            }
-                            else
-                            {
-                                stillShopping = false;
-                                Console.Clear();
-                                price = vendingMachine.GetItemAtSlot(input).Price;
-                                startingBalance = vendingMachine.Balance;
-                                item = vendingMachine.GetItemAtSlot(input).ItemName;
-                                //vendingMachine.Purchase(input, vendingMachine, customer, mainmenu); // perform purchase
-                                MakePurchase(input, item, startingBalance, price, vendingMachine.Balance, vendingMachine, customer, logger);
-                                //logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); // log the transactions
-                                DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
-                                break;
-                            }
+                            Console.Clear();
+                            Console.WriteLine("Returning To Purchase Menu");
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            price = vendingMachine.GetItemAtSlot(input).Price;
+                            startingBalance = vendingMachine.Balance;
+                            item = vendingMachine.GetItemAtSlot(input).ItemName;
+                            MakePurchase(input, item, startingBalance, price, vendingMachine.Balance, vendingMachine, customer, logger, mainmenu);
                         }
                     }
                     else if (key.KeyChar == '3')
                     {
-                        stayInMenu = false;
+                        stayInSubMenu = false;
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Returning To Main Menu");
                         mainmenu.Display(vendingMachine, customer, mainmenu, logger);
-                        break;
                     }
                     else
                     {
-                        ErrorBuzz();
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
+                        ErrorBuzz();
                     }
                 }
             }
             catch (KeyNotFoundException)
             {
-                ErrorBuzz();
                 Console.WriteLine();
                 Console.WriteLine("Invalid Product Code");
+                ErrorBuzz();
                 DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
             }
             catch (IndexOutOfRangeException)
             {
-                ErrorBuzz();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Your Selection Again");
+                ErrorBuzz();
                 DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
             }
             catch (NullReferenceException)
             {
-                ErrorBuzz();
-
                 Console.WriteLine();
                 Console.WriteLine("Please Select Another Product");
+                ErrorBuzz();
                 DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
             }
             catch (FormatException)
             {
-                ErrorBuzz();
                 Console.Clear();
                 Console.WriteLine();
-                Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
+                Console.WriteLine("Please Enter $1 Or $5 Dollar Bills");
+                ErrorBuzz();
                 DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
             }
         }

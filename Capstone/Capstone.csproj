@@ -49,6 +49,7 @@
     <Compile Include="Classes\DrinkItem.cs" />
     <Compile Include="Classes\GumItem.cs" />
     <Compile Include="Classes\MainMenu.cs" />
+    <Compile Include="Classes\MenuCLI.cs" />
     <Compile Include="Classes\PurchaseMenu.cs" />
     <Compile Include="Classes\VendingMachineLogger.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -21,44 +21,21 @@ namespace Capstone.Classes
         {
             try
             {
-                using (StreamWriter logger = new StreamWriter("log.txt", true))
+                if (!Directory.Exists("Logs"))
+                {
+                    Directory.CreateDirectory("Logs");
+                }
+                using (StreamWriter logger = new StreamWriter(FilePath, true))
                 {
                     logger.WriteLine($"{DateTime.Now} {transaction}: {startBalance} {transactAmount} {finalBalance}");
                 }
             }
             catch (IOException)
             {
+                Console.WriteLine();
+                ErrorBuzz();
                 Console.WriteLine("Sales Logging Error");
-            }
-        }
-        public void TotalSalesLog(Dictionary<string, int> salesAudit, VendingMachine vendingMachine)
-        {
-            try // this is what remains of our attempt to make a running sales total / total items sold log
-            {
-                StreamWriter audit = new StreamWriter("sales-log.txt", true);
-                using (StreamReader sr = new StreamReader("log.txt"))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string line = sr.ReadLine();
-
-                        foreach (var kvp in salesAudit)
-                        {
-                            if (line.Contains(kvp.Key.ToString()))
-                            {
-                                salesAudit[kvp.Key] += 1;
-                            }
-                        }
-                        foreach (var kvp in salesAudit)
-                        {
-                            audit.WriteLine($"{kvp.Key} {kvp.Value}");
-                        }
-                    }
-                }
-            }
-            catch (IOException)
-            {
-
+                Console.WriteLine();
             }
         }
     }
