@@ -70,7 +70,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Elevator-music.mp3" />
+    <Content Include="Sounds\bomb_x.wav" />
+    <Content Include="Sounds\click_x.wav" />
+    <Content Include="Sounds\Elevator-music.wav" />
+    <Content Include="Sounds\fail-buzzer.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.Classes
 {
-    public class MainMenu
+    public class MainMenu : VendingMachine
     {
         public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, VendingMachineLogger logger)
         {
@@ -14,16 +14,19 @@ namespace Capstone.Classes
             // :)
             System.Media.SoundPlayer click = new System.Media.SoundPlayer(@".\click_x.wav");
 
+                        System.Media.SoundPlayer error = new System.Media.SoundPlayer(@".\fail-buzzer.wav");
+
             // variables for keeping trak of if user is still in menu and starting balance for logging
             bool stillShopping = true;
             decimal startingBalance = 0.00m;
 
             try
             {
-                PrintHeader();
 
                 while (stillShopping)
                 {
+                    PrintHeader();
+                    MenuSound();
                     // Main Menu
                     Console.WriteLine();
                     Console.WriteLine("Main Menu".PadLeft(15));
@@ -41,7 +44,7 @@ namespace Capstone.Classes
                     // If Option 1, Display All Items in the Inventory
                     if (key.KeyChar == '1')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Displaying Vending Machine Items");
@@ -71,14 +74,14 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == '2')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         PurchaseMenu purchaseMenu = new PurchaseMenu();// creates a sub menu called purchaseMenu
                         purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);// takes you in to the purchase menu
                     }
                     else if (key.KeyChar == '3')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         if (customer.Count > 0 || vendingMachine.Balance > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
                         {
@@ -101,6 +104,7 @@ namespace Capstone.Classes
                         } 
                         else // else - prevent customer from even prodding this area if they don't have items to consume and change to return
                         {
+                            FatalErrorSound();
                             Console.Clear();
                             Console.WriteLine();
                             Console.WriteLine("There Is No Transaction To Complete");
@@ -108,16 +112,17 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == 'q' || key.KeyChar == 'Q' && customer.Count == 0 && vendingMachine.Balance == 0)
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         Console.WriteLine();
                         stillShopping = false;
                     }
                     else
                     {
+                        FatalErrorSound();
                         Console.Clear();
                         Console.WriteLine();
-                        Console.WriteLine("Please Select A Valid Menu Option Select Complete Transaction To Return Your Money");
+                        Console.WriteLine("Please Select A Valid Menu Option");
                         Console.WriteLine();
                         Console.WriteLine("Select Complete Transaction To Return Your Money");
                     }
@@ -125,7 +130,7 @@ namespace Capstone.Classes
             }
             catch (KeyNotFoundException)
             {
-                boom.Play();
+                FatalErrorSound();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Another Selection");
             }
@@ -135,6 +140,29 @@ namespace Capstone.Classes
             Console.WriteLine();
             Console.WriteLine("Welcome to Vend-O-Matic!");
             Console.WriteLine();
+        }
+        public void MakePurchase(string input, VendingMachine vendingMachine, List<VendingMachineItem> customer, PurchaseMenu purchaseMenu, MainMenu mainmenu, VendingMachineLogger logger)
+        {
+            vendingMachine.Purchase(input, vendingMachine, customer, mainmenu);
+        }
+        public void SalesAudit(string transactType, decimal startingBal, decimal transactAmt, decimal finalBal, VendingMachineLogger logger)
+        {
+            logger.RecordTransaction(" ", startingBal, transactAmt, finalBal);
+        }
+        public void MenuSound()
+        {
+            System.Media.SoundPlayer loop = new System.Media.SoundPlayer(@".\Elevator-music.wav");
+            loop.Play();
+        }
+        public void ButtonSound()
+        {
+            System.Media.SoundPlayer click = new System.Media.SoundPlayer(@".\click_x.wav");
+            click.PlaySync();
+        }
+        public void FatalErrorSound()
+        {
+            System.Media.SoundPlayer error = new System.Media.SoundPlayer(@".\fail-buzzer.wav");
+            error.PlaySync();   
         }
     }
 }

@@ -7,12 +7,11 @@ using System.IO;
 
 namespace Capstone.Classes
 {
-    public class PurchaseMenu
+    public class PurchaseMenu : MainMenu
     {
         public void Display(VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu, PurchaseMenu purchaseMenu, VendingMachineLogger logger)
         {
-            System.Media.SoundPlayer boom = new System.Media.SoundPlayer(@".\bomb_x.wav");
-            System.Media.SoundPlayer click = new System.Media.SoundPlayer(@".\click_x.wav");
+
             // variables for keeping track of various user inputs and interaction
             string input;
             int addedMoney;
@@ -27,6 +26,7 @@ namespace Capstone.Classes
             {
                 while (stayInMenu)
                 {
+                    MenuSound();
                     Console.WriteLine();
                     Console.WriteLine("Purchase Menu");
                     Console.WriteLine();
@@ -41,13 +41,13 @@ namespace Capstone.Classes
 
                     if (key.KeyChar == '1')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         Console.WriteLine();
                         Console.Write("What Bills Would You Like To Insert?(ie $1, $5, $10, $20): $");
                         addedMoney = int.Parse(Console.ReadLine()); // prompt user to insert bills of various denominations
                         Console.WriteLine();
-                        click.Play();
+                        ButtonSound();
                         startingBalance = vendingMachine.Balance;
                         moneyFed = addedMoney + 0.00m;
 
@@ -60,7 +60,7 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == '2')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         while (stillShopping)
                         {
@@ -91,7 +91,7 @@ namespace Capstone.Classes
 
                             if (input.ToLower() == "q")
                             {
-                                click.Play();
+                                ButtonSound();
                                 Console.Clear();
                                 Console.WriteLine("Returning To Purchase Menu");
                                 stillShopping = false;
@@ -99,14 +99,15 @@ namespace Capstone.Classes
                             }
                             else
                             {
-                                click.Play();
+                                ButtonSound();
                                 Console.Clear();
                                 price = vendingMachine.GetItemAtSlot(input).Price;
                                 startingBalance = vendingMachine.Balance;
                                 item = vendingMachine.GetItemAtSlot(input).ItemName;
-                                vendingMachine.Purchase(input, vendingMachine, customer, purchaseMenu, mainmenu, logger); // perform purchase
-
-                                logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); // log the transactions
+                                /*        vendingMachine.Purchase(input, vendingMachine, customer, purchaseMenu, mainmenu, logger);*/ // perform purchase
+                                MakePurchase(input, vendingMachine, customer, purchaseMenu, mainmenu, logger);
+                                /*logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); */// log the transactions
+                                SalesAudit($"{item} {input.ToLower()}", startingBalance, price, Balance, logger);
                                 stillShopping = false;
                                 purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
                             }
@@ -114,7 +115,7 @@ namespace Capstone.Classes
                     }
                     else if (key.KeyChar == '3')
                     {
-                        click.Play();
+                        ButtonSound();
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Returning To Main Menu");
@@ -123,14 +124,16 @@ namespace Capstone.Classes
                     }
                     else
                     {
+                        FatalErrorSound();
                         Console.Clear();
                         Console.WriteLine();
                         Console.WriteLine("Please Select A Valid Menu Option");
                     }
                 }
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
+                FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Invalid Product Code");
@@ -138,6 +141,7 @@ namespace Capstone.Classes
             }
             catch (IndexOutOfRangeException)
             {
+                FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Make Your Selection Again");
@@ -145,6 +149,7 @@ namespace Capstone.Classes
             }
             catch (NullReferenceException)
             {
+                FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Select Another Product");
@@ -152,7 +157,7 @@ namespace Capstone.Classes
             }
             catch (FormatException)
             {
-                boom.Play();
+                FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Please Enter Whole Dollar Amounts(ie $1, $5, $10, $20)");
@@ -160,7 +165,7 @@ namespace Capstone.Classes
             }
             catch (OverflowException)
             {
-                boom.Play();
+                FatalErrorSound();
                 Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Machine Can't Handle That Much Money");

@@ -22,10 +22,8 @@ namespace Capstone.Classes
         public VendingMachine()
         {
             VendingMachineFileReader vmfr = new VendingMachineFileReader("vend.csv");
-        
             Inventory = vmfr.GetInventory();
         }
-
         public void FeedMoney(int dollars)
         {
             Balance += dollars;
@@ -45,25 +43,24 @@ namespace Capstone.Classes
         {
             return Inventory[slot].Count();
         }
-
-        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer, PurchaseMenu purchaseMenu, MainMenu mainmenu, VendingMachineLogger logger)
+        public void Purchase(string slot, VendingMachine vendingMachine, List<VendingMachineItem> customer, MainMenu mainmenu)
         {
             VendingMachineItem vmi = vendingMachine.GetItemAtSlot(slot);
             // check if item is in stock - if not, return "out of stock"
             if (vendingMachine.GetQuantityRemaining(slot) == 0 || vmi == null)
             {
+                mainmenu.FatalErrorSound();
                 Console.WriteLine();
                 Console.Write("SOLD OUT!");
                 Console.WriteLine();
-
             }
-            if (Balance < GetItemAtSlot(slot).Price)
+            if (Balance < GetItemAtSlot(slot).Price)// check if user has enough money - if not return "insufficient funds"
             {
-                // check if user has enough money - if not return "insufficient funds"
+                mainmenu.FatalErrorSound();
+                Console.Clear();
                 Console.WriteLine();
                 Console.Write("INSUFFICIENT FUNDS!");
                 Console.WriteLine();
-                purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
             }
             else 
             {
@@ -75,7 +72,6 @@ namespace Capstone.Classes
                 Inventory[slot].RemoveAt(0);
             }
         }
-
         public Change ReturnChange()
         {
             Change change = new Change(Balance);
