@@ -15,7 +15,6 @@ namespace Capstone.Classes
             {
                 // variables for keeping trak of if user is still in menu and starting balance for logging
                 bool stayInMenu = true;
-                decimal startingBalance = 0.00m;
                 ConsoleKeyInfo key;
 
                 PrintHeader();
@@ -39,32 +38,13 @@ namespace Capstone.Classes
                     key = Console.ReadKey();
                     ButtonClick();
 
-                    // If Option 1, Display All Items in the Inventory
+                    // If Option 1, Display All Items In The Inventory
                     if (key.KeyChar == '1')
                     {
                         Console.Clear();
-                        // Check to see if the items are in stock or not. If In Stock Print Price, Name and Amount Available. If Out Of Stock Print Out Of Stock
-                        int enums = 0;// enumerator int used to keep track of current slot in the foreach loop
-                        Console.WriteLine(" ____________________________________");
-                        foreach (var kvp in vendingMachine.Slots)
-                        {
-                            VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp); // assigning the value at the current slot in the loop to a variable
-
-                            if (vmi == null)// if - slot is empty list item as sold out
-                            {
-                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
-                            }
-                            else// else - list key, item, price and quantity
-                            {
-                                Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)} |");
-                            }
-                            enums++;// enumerator
-                        }
-                        Console.WriteLine(" ____________________________________");
-                        Console.WriteLine();
-                        Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");// money currently in the machine
-                        Console.WriteLine();
+                        DisplayMachineItems(vendingMachine);
                     }
+                    // If Option 2, Display The Purchase Menu
                     else if (key.KeyChar == '2')
                     {
                         stayInMenu = false;
@@ -78,23 +58,7 @@ namespace Capstone.Classes
                         if (customer.Count > 0 || vendingMachine.Balance > 0) // if - customer has items to consume and change to be returned, perform appropriate actions 
                         {
                             stayInMenu = false;
-                            Console.WriteLine();
-                            foreach (var item in customer)// loop through purchased items and 'cosume' them
-                            {
-                                Console.WriteLine(item.Consume());
-                            }
-                            customer.Clear(); // clear out consumed items
-                            startingBalance = vendingMachine.Balance;
-                            Console.WriteLine();
-                            Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
-                            Console.WriteLine();
-                            Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
-                            logger.RecordTransaction("GIVE CHANGE ", startingBalance, startingBalance, vendingMachine.Balance);
-                            Console.WriteLine();
-                            Console.WriteLine("Thank You Come Again");
-                            Console.WriteLine();
-                            Delay();
-                            Console.Clear();
+                            CompleteTransaction(vendingMachine.Balance, vendingMachine, customer, logger);
                             break;
                         } 
                         else // else - prevent customer from even prodding this area if they don't have items to consume and change to return
@@ -150,9 +114,54 @@ namespace Capstone.Classes
             PurchaseMenu purchaseMenu = new PurchaseMenu();
             purchaseMenu.Display(vendingMachine, customer, mainmenu, purchaseMenu, logger);
         }
-        public void MakePurchase(string item, VendingMachine vendingMachine, List<VendingMachineItem> customer)
+        public void DisplayMachineItems(VendingMachine vendingMachine)
         {
-            vendingMachine.Purchase(item, vendingMachine, customer);
+            int enums = 0;// enumerator int used to keep track of current slot in the foreach loop
+            Console.WriteLine(" ____________________________________");
+            // Check to see if the items are in stock or not. If In Stock Print Price, Name and Amount Available. If Out Of Stock Print Out Of Stock
+            foreach (var kvp in vendingMachine.Slots)
+            {
+                VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp); // assigning the value at the current slot in the loop to a variable
+
+                if (vmi == null)
+                {
+                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
+                }
+                else
+                {
+                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)} |");
+                }
+                enums++;// enumerator
+            }
+            Console.WriteLine(" ____________________________________");
+            Console.WriteLine();
+            Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");// money currently in the machine
+            Console.WriteLine();
+        }
+        public void MakePurchase(string slot, string item, decimal startBal, decimal price, decimal finalBal, VendingMachine vendingMachine, List<VendingMachineItem> customer, VendingMachineLogger logger)
+        {
+            vendingMachine.Purchase(slot, vendingMachine, customer);
+            logger.RecordTransaction($"{item} {slot.ToUpper()}", startBal, price, finalBal);
+        }
+        public void CompleteTransaction(decimal startBal, VendingMachine vendingMachine, List<VendingMachineItem> customer, VendingMachineLogger logger)
+        {
+            Console.WriteLine();
+            foreach (var item in customer)// loop through purchased items and 'cosume' them
+            {
+                Console.WriteLine(item.Consume());
+            }
+            customer.Clear(); // clear out consumed items
+            startBal = vendingMachine.Balance;
+            Console.WriteLine();
+            Console.WriteLine($"Total Change Due: {vendingMachine.Balance}");
+            Console.WriteLine();
+            Console.WriteLine(vendingMachine.ReturnChange().DueChange); // prints change in least amount of quarters, dimes and nickels
+            logger.RecordTransaction("GIVE CHANGE ", startBal, startBal, vendingMachine.Balance);
+            Console.WriteLine();
+            Console.WriteLine("Thank You Come Again");
+            Console.WriteLine();
+            Delay();
+            Console.Clear();
         }
         public void ButtonClick()
         {

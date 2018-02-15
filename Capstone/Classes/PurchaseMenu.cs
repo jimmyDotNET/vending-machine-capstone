@@ -42,11 +42,8 @@ namespace Capstone.Classes
 
                     if (key.KeyChar == '1')
                     {
-                        stayInMenu = false;
                         Console.Clear();
-                        Console.WriteLine();
                         Console.Write("Insert $1 Or $5 Bills: $ ");
-                        Console.WriteLine();
 
                         key = Console.ReadKey(); // prompt user to insert bills of various denominations
 
@@ -55,6 +52,7 @@ namespace Capstone.Classes
                         ButtonClick();
                         if (addedMoney <= 5 && addedMoney > 0)
                         {
+                            stayInMenu = false;
                             Console.WriteLine();
                             startingBalance = vendingMachine.Balance;
                             moneyFed = addedMoney + 0.00m;
@@ -76,26 +74,7 @@ namespace Capstone.Classes
                         Console.Clear();
                         while (stillShopping)
                         {
-                            int enums = 0;// int for keeping track of current slot
-                            Console.WriteLine();
-                            Console.WriteLine(" ____________________________________");
-                            foreach (var kvp in vendingMachine.Slots)
-                            {
-                                VendingMachineItem vmi = vendingMachine.GetItemAtSlot(kvp);// assigning the value at the current slot in the loop to a variable
-                                
-                                if (vmi == null)// if - slot is empty list item as sold out
-                                {
-                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | SOLD OUT                      |");
-                                }
-                                else// else - list key, item, price and quantity
-                                {
-                                    Console.WriteLine($"| {vendingMachine.Slots.GetValue(enums)} | {vendingMachine.GetItemAtSlot(kvp).ItemName.PadRight(18)} | {vendingMachine.GetItemAtSlot(kvp).Price} | {vendingMachine.GetQuantityRemaining(kvp)} |");
-                                }
-                                enums++;// enumerator
-                            }
-                            Console.WriteLine(" ____________________________________");
-                            Console.WriteLine();
-                            Console.WriteLine($"Current Balance: ${vendingMachine.Balance}");
+                            DisplayMachineItems(vendingMachine);
                             Console.WriteLine();
                             Console.Write("Which item would you like to purchase(press Q to leave)? ");
 
@@ -105,25 +84,22 @@ namespace Capstone.Classes
                             if (input.ToLower() == "q")
                             {
                                 stillShopping = false;
-
                                 Console.Clear();
                                 Console.WriteLine("Returning To Purchase Menu");
-
+                                DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
                                 break;
                             }
                             else
                             {
                                 stillShopping = false;
-
                                 Console.Clear();
                                 price = vendingMachine.GetItemAtSlot(input).Price;
                                 startingBalance = vendingMachine.Balance;
                                 item = vendingMachine.GetItemAtSlot(input).ItemName;
                                 //vendingMachine.Purchase(input, vendingMachine, customer, mainmenu); // perform purchase
-                                MakePurchase(input, vendingMachine, customer);
-
-                                logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); // log the transactions
-
+                                MakePurchase(input, item, startingBalance, price, vendingMachine.Balance, vendingMachine, customer, logger);
+                                //logger.RecordTransaction($"{item} {input.ToUpper()}", startingBalance, price, vendingMachine.Balance); // log the transactions
+                                DisplaySubMenu(vendingMachine, customer, mainmenu, logger);
                                 break;
                             }
                         }
